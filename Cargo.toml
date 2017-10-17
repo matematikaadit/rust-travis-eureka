@@ -1,6 +1,6 @@
 [package]
 name = "rust-travis-eureka"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Adit Cahya Ramadhan <matematika.adit@gmail.com>"]
 
 [dependencies]
