@@ -7,3 +7,18 @@ cache: cargo
 matrix:
   allow_failures:
     - rust: nightly
+env:
+  global:
+    - PROJECT_NAME=rust-travis-eureka
+before_deploy:
+  - cargo build --release --verbose
+  - tar czf "${PROJECT_NAME}.tar.gz" "target/release/${PROJECT_NAME}"
+deploy:
+  provider: releases
+  api_key:
+    secure: d7ttlXL24+AO8vxHIdISCOzbaxVgYJ3EoIDBfKj6ISMXYz4G66HRxOsa+tNNNHhs+K4eog5FJq0nMzNY1xE+BylUumh+zkfTffhxk4OgXzY6PZQ4kiRhXYMJqDDnsjg8LMxv+23ix5qKmZMi4mmGdh42R1oxxQPSIUZG9inSZrvvOtqfnbPFDOHqJPA5Ikf0NmndcLQicSDd12/kqpf0x+ylSaeuakA4gF1tdoF+jUBmSg5F7zz36hp+EvYoC/QjunJfV+ToWGkxT/sQK8xsuR7LTCNLxV4U+aYscrO28iSrJ8VruwXvloNVmuIdpOvV+55vm3IiSxI/pSNAXTH/qp6EAGLtWsDfxU4jVhdnvFtNvuxX+X0y30SFLvjngLoLfzsZI4shwQconLGSNpr7gwBmzkyty+qICbO48eikCe9h2K34qf8NVEHVaV07MjQu+/b8fLcSfwI4dMYswEQhUD/KWT3NpOqbnE/hz1AmJDrqrwVSCRC+XUsQS9qe3ImwE2apNs9BeabV7BaoH75YTJpbBRlxTguI8CC1dFRybSsseWdp6E2II6gFv7jC1lGqa0MkACuSpqzkGAJo2xujdtKkoWdOrEi/e858kZg3++eaUCqFhC2D/vwxA3Bjuk7hVS+ZJbNCOh6INq5+xNV8KEEoSxMv6VEdSlVJRG020JI=
+  file: ${PROJECT_NAME}.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $TRAVIS_RUST_VERSION = stable
