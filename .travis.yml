@@ -48,13 +48,14 @@ addons:
     packages:
       - libgcc-4.8-dev:i386
 install:
-  - rustup target add $TARGET
+  - if [[ $HOST != $TARGET ]]; then rustup target add $TARGET; fi
 script:
   - cargo build --target $TARGET --verbose
   - cargo test --target $TARGET --verbose
 env:
   global:
     - PROJECT_NAME=rust-travis-eureka
+    - HOST=x86_64-unknown-linux-gnu
 before_deploy:
   - bash ci/before_deploy.bash
 deploy:
