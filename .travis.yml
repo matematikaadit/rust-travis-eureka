@@ -45,7 +45,7 @@ matrix:
     - rust: nightly
 addons:
   apt:
-    install:
+    packages:
       - libgcc-4.8-dev:i386
 install:
   - rustup target add $TARGET
