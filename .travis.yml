@@ -46,25 +46,43 @@ matrix:
 addons:
   apt:
     packages:
+      # needed for i686-unknown-linux-gnu target
       - gcc-multilib
 install:
+  # "rustup error: cannot re-add" without this conditional check
   - if [[ $HOST != $TARGET ]]; then rustup target add $TARGET; fi
 script:
   - cargo build --target $TARGET --verbose
   - cargo test --target $TARGET --verbose
 env:
   global:
+    # for binary, archive, and folder name
     - PROJECT_NAME=rust-travis-eureka
+    # default target in travis-ci's rust installation
+    # used in the `install stage` above
     - HOST=x86_64-unknown-linux-gnu
 before_deploy:
   - bash ci/before_deploy.bash
 deploy:
   provider: releases
+  # NOTE updating the `api_key.secure`
+  # - go to: https://github.com/settings/tokens/new
+  # - choose `public_repo` scope and generate the token
+  # - encrypt it using: `travis encrypt API_KEY_HERE`
+  # - paste the output below
   api_key:
     secure: d7ttlXL24+AO8vxHIdISCOzbaxVgYJ3EoIDBfKj6ISMXYz4G66HRxOsa+tNNNHhs+K4eog5FJq0nMzNY1xE+BylUumh+zkfTffhxk4OgXzY6PZQ4kiRhXYMJqDDnsjg8LMxv+23ix5qKmZMi4mmGdh42R1oxxQPSIUZG9inSZrvvOtqfnbPFDOHqJPA5Ikf0NmndcLQicSDd12/kqpf0x+ylSaeuakA4gF1tdoF+jUBmSg5F7zz36hp+EvYoC/QjunJfV+ToWGkxT/sQK8xsuR7LTCNLxV4U+aYscrO28iSrJ8VruwXvloNVmuIdpOvV+55vm3IiSxI/pSNAXTH/qp6EAGLtWsDfxU4jVhdnvFtNvuxX+X0y30SFLvjngLoLfzsZI4shwQconLGSNpr7gwBmzkyty+qICbO48eikCe9h2K34qf8NVEHVaV07MjQu+/b8fLcSfwI4dMYswEQhUD/KWT3NpOqbnE/hz1AmJDrqrwVSCRC+XUsQS9qe3ImwE2apNs9BeabV7BaoH75YTJpbBRlxTguI8CC1dFRybSsseWdp6E2II6gFv7jC1lGqa0MkACuSpqzkGAJo2xujdtKkoWdOrEi/e858kZg3++eaUCqFhC2D/vwxA3Bjuk7hVS+ZJbNCOh6INq5+xNV8KEEoSxMv6VEdSlVJRG020JI=
+  # for uploading multiple files
   file_glob: true
+  # $PROJECT_NAME is the global variable we set above
+  # $TRAVIS_TAG is the git's tag name that this release being deployed for
+  # $TARGET is the target triple for the build, sets on the build matrix
   file: ${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz
+  # don't delete artifacts from previous stage
   skip_cleanup: true
   on:
     tags: true
+    # deploy on the stable channel only
+    # and make sure TARGET env var is being set
+    # NOTE only release *once* per target
     condition: $TRAVIS_RUST_VERSION = stable && -v TARGET
