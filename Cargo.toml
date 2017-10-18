@@ -3,6 +3,12 @@ name = "rust-travis-eureka"
 version = "0.4.0"
 authors = ["Adit Cahya Ramadhan <matematika.adit@gmail.com>"]
 build = "build.rs"
+description = "Print Eureka!"
+homepage = "https://github.com/matematikaadit/rust-travis-eureka"
+repository = "https://github.com/matematikaadit/rust-travis-eureka"
+readme = "README.md"
+license = "MIT"
+license-file = "LICENSE"
 
 [build-dependencies]
 clap = "2.26"
