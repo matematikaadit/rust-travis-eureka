@@ -43,6 +43,10 @@ matrix:
       env: TARGET=i686-unknown-linux-musl
   allow_failures:
     - rust: nightly
+addons:
+  apt:
+    install:
+      - libgcc-4.8-dev:i386
 install:
   - rustup target add $TARGET
 script:
