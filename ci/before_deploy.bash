@@ -1,3 +1,4 @@
+#!/bin/bash
 # Building and packaging for release
 
 set -ex
@@ -6,10 +7,14 @@ build() {
     cargo build --target "$TARGET" --release --verbose
 }
 
-package() {
-    local tempdir=$(mktemp -d 2>/dev/null || mktemp -d -t tmp)
-    local out_dir=$(pwd)
-    local package_name="${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}"
+pack() {
+    local tempdir
+    local out_dir
+    local package_name
+
+    tempdir=$(mktemp -d 2>/dev/null || mktemp -d -t tmp)
+    out_dir=$(pwd)
+    package_name="${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}"
 
     # create a "staging" directory
     mkdir "$tempdir/$package_name"
@@ -27,14 +32,14 @@ package() {
 
     # archiving
     pushd "$tempdir"
-    tar czf "$out_dir/$package_name.tar.gz" *
+    tar czf "$out_dir/$package_name.tar.gz" ./*
     popd
     rm -r "$tempdir"
 }
 
 main() {
     build
-    package
+    pack
 }
 
 main
