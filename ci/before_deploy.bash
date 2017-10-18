@@ -26,9 +26,9 @@ pack() {
     cp README.md "$tempdir/$package_name"
     cp LICENSE "$tempdir/$package_name"
     # various autocomplete
-    # cp target/$TARGET/release/build/${PROJECT_NAME}-*/out/${PROJECT_NAME}.bash_completion "$tempdir/$package_name/autocomplete"
-    # cp target/$TARGET/release/build/${PROJECT_NAME}-*/out/${PROJECT_NAME}.fish "$tempdir/$package_name/autocomplete"
-    # cp target/$TARGET/release/build/${PROJECT_NAME}-*/out/_${PROJECT_NAME} "$tempdir/$package_name/autocomplete"
+    cp target/"$TARGET"/release/build/"$PROJECT_NAME"-*/out/"$PROJECT_NAME".bash_completion "$tempdir/$package_name/autocomplete"
+    cp target/"$TARGET"/release/build/"$PROJECT_NAME"-*/out/"$PROJECT_NAME".fish "$tempdir/$package_name/autocomplete"
+    cp target/"$TARGET"/release/build/"$PROJECT_NAME"-*/out/_"$PROJECT_NAME" "$tempdir/$package_name/autocomplete"
 
     # archiving
     pushd "$tempdir"

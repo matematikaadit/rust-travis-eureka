@@ -1,6 +1,11 @@
 [package]
 name = "rust-travis-eureka"
-version = "0.3.0"
+version = "0.4.0"
 authors = ["Adit Cahya Ramadhan <matematika.adit@gmail.com>"]
+build = "build.rs"
+
+[build-dependencies]
+clap = "2.26"
 
 [dependencies]
+clap = "2.26"
