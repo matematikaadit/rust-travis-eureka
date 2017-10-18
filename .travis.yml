@@ -43,6 +43,11 @@ matrix:
       env: TARGET=i686-unknown-linux-musl
   allow_failures:
     - rust: nightly
+install:
+  - rustup target add $TARGET
+script:
+  - cargo build --target $TARGET --verbose
+  - cargo test --target $TARGET --verbose
 env:
   global:
     - PROJECT_NAME=rust-travis-eureka
